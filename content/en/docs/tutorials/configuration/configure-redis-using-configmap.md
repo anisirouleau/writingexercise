@@ -111,43 +111,39 @@ Before making any changes, let's see how the Redis pod is currently configured.
     Namespace:    default
     Labels:       <none>
     Annotations:  <none>
-    ````
-Data
-====
-redis-config:
-```
-Next, let's look at how Redis is currently configured:
-```shell
-kubectl exec -it redis -- redis-cli
-```
-First check `maxmemory`:
-```shell
-127.0.0.1:6379> CONFIG GET maxmemory
-```
+    
+    Data
+    ====
+    redis-config:
+    ```
+3. Get the Redis pod's current configuration using the `redis-cli` tool:
+    ```shell
+    kubectl exec -it redis -- redis-cli
+    ```
+4. Check `maxmemory`:
+   ```shell
+   127.0.0.1:6379> CONFIG GET maxmemory
+   ```
+   You should get the output below:
+   ```shell
+   1) "maxmemory"
+   2) "0"
+   ```
+   
+5. Check `maxmemory-policy`:
+    ```shell
+    127.0.0.1:6379> CONFIG GET maxmemory-policy
+    ```
+    You should get the output below:
+   ```shell
+   1) "maxmemory-policy"
+   2) "noeviction"
+   ```
+6. Use the `exit` command to close the `redis-cli` tool. 
 
-It should show the default value of 0:
+### Step 4: Add congiguration values
 
-```shell
-1) "maxmemory"
-2) "0"
-```
-
-Next, check `maxmemory-policy`:
-
-```shell
-127.0.0.1:6379> CONFIG GET maxmemory-policy
-```
-
-It should show the default value of `noeviction`:
-
-```shell
-1) "maxmemory-policy"
-2) "noeviction"
-```
-
-###Step 4: Add congiguration values
-
-Now let's add some configuration values to the `example-redis-config` ConfigMap:
+Now, let's add some configuration values to the `example-redis-config` ConfigMap:
 
 {{% code_sample file="pods/config/example-redis-config.yaml" %}}
 
