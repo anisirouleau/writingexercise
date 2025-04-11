@@ -86,14 +86,15 @@ kubectl get pod redis -o yaml
 ```
 If the Redis pod matches the snippets above, the ConfigMap has been correctly added as `redis.conf`.
 
-### Step 3: Review current configuration
+### Step 3: View current configuration
 
-Let's check how the Redis pod is currently configured, starting with the ConfigMap:
-
+Before making changes, let's see how Redis is currently configured.
+First, check that the ConfigMap is running:
 ```shell
 kubectl get pod/redis configmap/example-redis-config 
 ```
-You should get the following output:
+
+You should get the output below:
 
 ```
 NAME        READY   STATUS    RESTARTS   AGE
@@ -102,22 +103,12 @@ pod/redis   1/1     Running   0          8s
 NAME                             DATA   AGE
 configmap/example-redis-config   1      14s
 ```
+Now review the ConfigMap's details:
 
-2. Review the ConfigMap's details:
 ```shell
 kubectl describe configmap/example-redis-config
 ```
-You should get the following output:
-
-
-
-
-Recall that we left `redis-config` key in the `example-redis-config` ConfigMap blank:
-
-
-
-You should see an empty `redis-config` key:
-
+You should get the output below. Note that since we left the `redis-config` key blank, it will be empty here. 
 ```shell
 Name:         example-redis-config
 Namespace:    default
@@ -128,15 +119,11 @@ Data
 ====
 redis-config:
 ```
-
-Use `kubectl exec` to enter the pod and run the `redis-cli` tool to check the current configuration:
-
+Next, let's look at how Redis is currently configured:
 ```shell
 kubectl exec -it redis -- redis-cli
 ```
-
-Check `maxmemory`:
-
+First check `maxmemory`:
 ```shell
 127.0.0.1:6379> CONFIG GET maxmemory
 ```
@@ -148,18 +135,20 @@ It should show the default value of 0:
 2) "0"
 ```
 
-Similarly, check `maxmemory-policy`:
+Next, check `maxmemory-policy`:
 
 ```shell
 127.0.0.1:6379> CONFIG GET maxmemory-policy
 ```
 
-Which should also yield its default value of `noeviction`:
+It should show the default value of `noeviction`:
 
 ```shell
 1) "maxmemory-policy"
 2) "noeviction"
 ```
+
+###Step 4: Add congiguration values
 
 Now let's add some configuration values to the `example-redis-config` ConfigMap:
 
