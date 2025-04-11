@@ -16,9 +16,9 @@ This page provides a real-world example of using a ConfigMap to configure Redis,
 ## {{% heading "objectives" %}}
 
 
-* Create a ConfigMap with Redis configuration values
-* Create a Redis Pod that uses the created ConfigMap
-* Verify that the configuration was applied correctly
+* Create and verify a ConfigMap and Redis pod
+* Compare and change configurations
+* Apply and verify the new configuration
 
 
 
@@ -68,12 +68,12 @@ For reference, here's a look at the YAML file you are applying:
     ```shell
     kubectl get pod redis -o yaml
     ```
-2. Under ```spec.containers.volumeMounts``` verify it matches the following:
+2. Under `spec.containers.volumeMounts` verify it matches the following:
     ```shell
         - mountPath: /redis-master
           name: config
     ```
-3. Under ```spec.volumes``` verify that the second specification matches the following:
+3. Under `spec.volumes` verify that the second specification matches the following:
     ```shell
       - configMap:
           defaultMode: 420
