@@ -38,7 +38,8 @@ This page provides a real-world example of using a ConfigMap to configure Redis,
 
 Follow the steps below to configure a Redis cache using data stored in a ConfigMap.
 
-First create a ConfigMap with an empty configuration block:
+### Step 1: Create a ConfigMap and Redis pod
+1. In your kubectl command-line tool, add the ConfigMap below:
 
 ```shell
 cat <<EOF >./example-redis-config.yaml
@@ -50,7 +51,7 @@ data:
   redis-config: ""
 EOF
 ```
-
+2. 
 Apply the ConfigMap created above, along with a Redis pod manifest:
 
 ```shell
