@@ -60,11 +60,12 @@ kubectl apply -f example-redis-config.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/config/redis-pod.yaml
 ```
 For reference, here's a look at the YAML file you are applying:
+
 {{% code_sample file="pods/config/redis-pod.yaml" %}}
 
-### Step 2: Verify the ConfigMap and Redis pod
+### Step 2: Verify the ConfigMap has been added
 
-1. View the full details of the Redis pod using the snippet below.
+1. Use the snippet below to view the full details of the Redis pod YAML.
 ```shell
 kubectl get pod redis -o yaml
 ```
@@ -83,19 +84,16 @@ kubectl get pod redis -o yaml
       name: example-redis-config
     name: config
 ```
+If the Redis pod matches the snippets above, the ConfigMap has been correctly added as `redis.conf`.
 
-This has the net effect of exposing the data in `data.redis-config` from the `example-redis-config`
-ConfigMap above as `/redis-master/redis.conf` inside the Pod.
+### Step 3: Review current configuration
 
-
-
-Examine the created objects:
+Let's check how the Redis pod is currently configured, starting with the ConfigMap:
 
 ```shell
 kubectl get pod/redis configmap/example-redis-config 
 ```
-
-You should see the following output:
+You should get the following output:
 
 ```
 NAME        READY   STATUS    RESTARTS   AGE
@@ -105,11 +103,18 @@ NAME                             DATA   AGE
 configmap/example-redis-config   1      14s
 ```
 
-Recall that we left `redis-config` key in the `example-redis-config` ConfigMap blank:
-
+2. Review the ConfigMap's details:
 ```shell
 kubectl describe configmap/example-redis-config
 ```
+You should get the following output:
+
+
+
+
+Recall that we left `redis-config` key in the `example-redis-config` ConfigMap blank:
+
+
 
 You should see an empty `redis-config` key:
 
