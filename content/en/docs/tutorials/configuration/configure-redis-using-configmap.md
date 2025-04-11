@@ -124,7 +124,7 @@ Before making any changes, let's see how the Redis pod is currently configured.
    ```shell
    127.0.0.1:6379> CONFIG GET maxmemory
    ```
-   You should get the output below:
+   It should show the default value of `0`:
    ```shell
    1) "maxmemory"
    2) "0"
@@ -134,17 +134,18 @@ Before making any changes, let's see how the Redis pod is currently configured.
     ```shell
     127.0.0.1:6379> CONFIG GET maxmemory-policy
     ```
-    You should get the output below:
+    It should show the default value of `noeviction`:
    ```shell
    1) "maxmemory-policy"
    2) "noeviction"
    ```
 6. Use the `exit` command to close the `redis-cli` tool. 
 
-### Step 4: Add congiguration values
+### Step 4: Add configuration values
 
 Now, let's add some configuration values to the `example-redis-config` ConfigMap
 1. Add the ConfigMap below:
+
     {{% code_sample file="pods/config/example-redis-config.yaml" %}}
 
 2. Apply the updated ConfigMap:
@@ -168,84 +169,46 @@ Now, let's add some configuration values to the `example-redis-config` ConfigMap
    maxmemory 2mb
    maxmemory-policy allkeys-lru
    ```
+> [!IMPORTANT]
+> Pods do not automatically use updated values from associated ConfigMaps. To apply the new configuration, delete and recreate the Redis pod using the steps below.
+1. Delete the pod:
+    ```shell
+    kubectl delete pod redis
+    ````
+2. Recreate the pod:
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/config/redis-pod.yaml
+    ```
+    
+### Step 5: Verify new configuration values
 
-Check the Redis Pod again using `redis-cli` via `kubectl exec` to see if the configuration was applied:
-
-```shell
-kubectl exec -it redis -- redis-cli
-```
-
-Check `maxmemory`:
-
-```shell
-127.0.0.1:6379> CONFIG GET maxmemory
-```
-
-It remains at the default value of 0:
-
-```shell
-1) "maxmemory"
-2) "0"
-```
-
-Similarly, `maxmemory-policy` remains at the `noeviction` default setting:
-
-```shell
-127.0.0.1:6379> CONFIG GET maxmemory-policy
-```
-
-Returns:
-
-```shell
-1) "maxmemory-policy"
-2) "noeviction"
-```
-
-The configuration values have not changed because the Pod needs to be restarted to grab updated
-values from associated ConfigMaps. Let's delete and recreate the Pod:
-
-```shell
-kubectl delete pod redis
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/config/redis-pod.yaml
-```
-
-Now re-check the configuration values one last time:
-
-```shell
-kubectl exec -it redis -- redis-cli
-```
-
-Check `maxmemory`:
-
-```shell
-127.0.0.1:6379> CONFIG GET maxmemory
-```
-
-It should now return the updated value of 2097152:
-
-```shell
-1) "maxmemory"
-2) "2097152"
-```
-
-Similarly, `maxmemory-policy` has also been updated:
-
-```shell
-127.0.0.1:6379> CONFIG GET maxmemory-policy
-```
-
-It now reflects the desired value of `allkeys-lru`:
-
-```shell
-1) "maxmemory-policy"
-2) "allkeys-lru"
-```
-
-Clean up your work by deleting the created resources:
-
-```shell
-kubectl delete pod/redis configmap/example-redis-config
-```
+1. Get the Redis pod's current configuration using the `redis-cli` tool:
+    ```shell
+    kubectl exec -it redis -- redis-cli
+    ```
+2. Check `maxmemory`:
+    ```shell
+    127.0.0.1:6379> CONFIG GET maxmemory
+    ```
+    It should now show the updated value of 2097152:
+    ```shell
+    1) "maxmemory"
+    2) "2097152"
+    ```
+3. Check `maxmemory-policy`:
+   ```shell
+   127.0.0.1:6379> CONFIG GET maxmemory-policy
+   ```
+   It should now show the the updated value of `allkeys-lru`:
+   ```shell
+   1) "maxmemory-policy"
+   2) "allkeys-lru"
+   ```
+6. Use the `exit` command to close the `redis-cli` tool. 
+7. Clean up your work by deleting the created resources:
+    ```shell
+    kubectl delete pod/redis configmap/example-redis-config
+    ```
 
 ## {{% heading "whatsnext" %}}
 
