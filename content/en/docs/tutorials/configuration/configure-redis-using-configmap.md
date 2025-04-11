@@ -87,33 +87,31 @@ If the Redis pod matches the snippets above, the ConfigMap has been correctly ad
 
 ### Step 3: View current configuration
 
-Before making changes, let's see how Redis is currently configured.
-First, check that the ConfigMap is running:
-```shell
-kubectl get pod/redis configmap/example-redis-config 
-```
+Before making any changes, let's see how the Redis pod is currently configured.
+1. Check that the ConfigMap is running:
+    ```shell
+    kubectl get pod/redis configmap/example-redis-config 
+    ```
+    You should get the output below:
 
-You should get the output below:
-
-```
-NAME        READY   STATUS    RESTARTS   AGE
-pod/redis   1/1     Running   0          8s
-
-NAME                             DATA   AGE
-configmap/example-redis-config   1      14s
-```
-Now review the ConfigMap's details:
-
-```shell
-kubectl describe configmap/example-redis-config
-```
-You should get the output below. Note that since we left the `redis-config` key blank, it will be empty here. 
-```shell
-Name:         example-redis-config
-Namespace:    default
-Labels:       <none>
-Annotations:  <none>
-
+    ```
+    NAME        READY   STATUS    RESTARTS   AGE
+    pod/redis   1/1     Running   0          8s
+    
+    NAME                             DATA   AGE
+    configmap/example-redis-config   1      14s
+    ```
+2. Review the ConfigMap's details:
+    ```shell
+    kubectl describe configmap/example-redis-config
+    ```
+    You should get the output below. Note that since we left the `redis-config` key blank, it will be empty here. 
+    ```shell
+    Name:         example-redis-config
+    Namespace:    default
+    Labels:       <none>
+    Annotations:  <none>
+    ````
 Data
 ====
 redis-config:
