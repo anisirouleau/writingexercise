@@ -51,14 +51,23 @@ data:
   redis-config: ""
 EOF
 ```
-2. 
-Apply the ConfigMap created above, along with a Redis pod manifest:
-
+2. Apply the ConfigMap you created
 ```shell
 kubectl apply -f example-redis-config.yaml
+```
+3. Apply the Redis pod manifest
+```shell
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/config/redis-pod.yaml
 ```
+### Step 2: Verify the ConfigMap and Redis pod
 
+To view the full details of the Redis pod, use the snippet below:
+
+```shell
+kubectl get pod redis -o yaml
+```
+Check for the following in the Redis pod YAML:
+1. 
 Examine the contents of the Redis pod manifest and note the following:
 
 * A volume named `config` is created by `spec.volumes[1]`
