@@ -88,7 +88,7 @@ If the Redis pod matches the snippets above, the ConfigMap has been correctly ad
 ### Step 3: View current configuration
 
 Before making any changes, let's see how the Redis pod is currently configured.
-1. Check that the ConfigMap is running:
+1. Check that the pod is running:
     ```shell
     kubectl get pod/redis configmap/example-redis-config 
     ```
@@ -143,7 +143,7 @@ Before making any changes, let's see how the Redis pod is currently configured.
 
 ### Step 4: Add configuration values
 
-Now, let's add some configuration values to the `example-redis-config` ConfigMap
+Now, let's add some configuration values to the `example-redis-config` ConfigMap.
 1. Add the ConfigMap below:
 
     {{% code_sample file="pods/config/example-redis-config.yaml" %}}
