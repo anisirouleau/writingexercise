@@ -27,7 +27,7 @@ This page provides a real-world example of using a ConfigMap to configure Redis,
 
 1. {{< include "task-tutorial-prereqs.md" >}} 
 2. You need a basic understanding of how to [Configure a Pod to Use a ConfigMap](/docs/tasks/configure-pod-container/configure-pod-configmap/).
-3. You need to be running Kubernetes 1.14 or higher
+3. You need to be running Kubernetes 1.14 or higher.
     * {{< version-check >}}
 
 
