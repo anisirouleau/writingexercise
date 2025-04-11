@@ -143,37 +143,31 @@ Before making any changes, let's see how the Redis pod is currently configured.
 
 ### Step 4: Add congiguration values
 
-Now, let's add some configuration values to the `example-redis-config` ConfigMap:
+Now, let's add some configuration values to the `example-redis-config` ConfigMap
+1. Add the ConfigMap below:
+    {{% code_sample file="pods/config/example-redis-config.yaml" %}}
 
-{{% code_sample file="pods/config/example-redis-config.yaml" %}}
-
-Apply the updated ConfigMap:
-
-```shell
-kubectl apply -f example-redis-config.yaml
-```
-
-Confirm that the ConfigMap was updated:
-
-```shell
-kubectl describe configmap/example-redis-config
-```
-
-You should see the configuration values we just added:
-
-```shell
-Name:         example-redis-config
-Namespace:    default
-Labels:       <none>
-Annotations:  <none>
-
-Data
-====
-redis-config:
-----
-maxmemory 2mb
-maxmemory-policy allkeys-lru
-```
+2. Apply the updated ConfigMap:
+    ```shell
+    kubectl apply -f example-redis-config.yaml
+    ```
+3. Confirm that the ConfigMap was updated:
+   ```shell
+   kubectl describe configmap/example-redis-config
+   ```
+   You should get the output below:
+   ```shell
+   Name:         example-redis-config
+   Namespace:    default
+   Labels:       <none>
+   Annotations:  <none>
+   Data
+   ====
+   redis-config:
+   ----
+   maxmemory 2mb
+   maxmemory-policy allkeys-lru
+   ```
 
 Check the Redis Pod again using `redis-cli` via `kubectl exec` to see if the configuration was applied:
 
