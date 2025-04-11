@@ -40,25 +40,24 @@ Follow the steps below to configure a Redis cache using data stored in a ConfigM
 
 ### Step 1: Create a ConfigMap and Redis pod
 1. In your kubectl command-line tool, add the ConfigMap below:
-
-```shell
-cat <<EOF >./example-redis-config.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: example-redis-config
-data:
-  redis-config: ""
-EOF
-```
+    ```shell
+    cat <<EOF >./example-redis-config.yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: example-redis-config
+    data:
+      redis-config: ""
+    EOF
+    ```
 2. Apply the ConfigMap you created
-```shell
-kubectl apply -f example-redis-config.yaml
-```
+    ```shell
+    kubectl apply -f example-redis-config.yaml
+    ```
 3. Apply the Redis pod manifest
-```shell
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/config/redis-pod.yaml
-```
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/config/redis-pod.yaml
+    ```
 For reference, here's a look at the YAML file you are applying:
 
 {{% code_sample file="pods/config/redis-pod.yaml" %}}
@@ -66,24 +65,24 @@ For reference, here's a look at the YAML file you are applying:
 ### Step 2: Verify the ConfigMap has been added
 
 1. Use the snippet below to view the full details of the Redis pod YAML.
-```shell
-kubectl get pod redis -o yaml
-```
+    ```shell
+    kubectl get pod redis -o yaml
+    ```
 2. Under ```spec.containers.volumeMounts``` verify it matches the following:
-```shell
-    - mountPath: /redis-master
-      name: config
-```
+    ```shell
+        - mountPath: /redis-master
+          name: config
+    ```
 3. Under ```spec.volumes``` verify that the second specification matches the following:
-```shell
-  - configMap:
-      defaultMode: 420
-      items:
-      - key: redis-config
-        path: redis.conf
-      name: example-redis-config
-    name: config
-```
+    ```shell
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: redis-config
+            path: redis.conf
+          name: example-redis-config
+        name: config
+    ```
 If the Redis pod matches the snippets above, the ConfigMap has been correctly added as `redis.conf`.
 
 ### Step 3: View current configuration
